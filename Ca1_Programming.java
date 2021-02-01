@@ -36,6 +36,8 @@ public class Ca1_Programming {
                 String fullName = myFile.nextLine();
                 String name = fullName.substring(0, fullName.indexOf(" "));
                 String surname = fullName.substring(fullName.indexOf(" "));
+                String title = "";
+                boolean valid = true;
 
                 //Reading the second line, age into an Integer
                 String age1 = myFile.nextLine();
@@ -46,19 +48,28 @@ public class Ca1_Programming {
 
                 if (name.matches("[a-zA-Z]+") || surname.matches("[a-zA-Z]+")) { //Only letter allowed
 
-                    //If conditions to create the first line of the new file
-                    if (gender.equals("M")) {
-                        myWriter.write("Mr" + surname + ", " + name.substring(0, 1));
-                        myWriter.newLine();
-                    } else if (gender.endsWith("F")) {
-                        myWriter.write("Ms" + surname + ", " + name.substring(0, 1));
-                        myWriter.newLine();
-                    } else if (gender.equals("T")) {
-                        myWriter.write("Mx" + surname + ", " + name.substring(0, 1));
-                        myWriter.newLine();
-                    } else { //if the letters is neither M, F or T a message will appear in the outpu
-                        System.out.println("Error - Gender has to be one of the following letters: M, F or T");
+                    //Switch case to check gender and create the title
+                    switch (gender.toUpperCase()) {
+
+                        case "M":
+                            title = "Mr";
+                            break;
+
+                        case "F":
+                            title = "Ms";
+                            break;
+
+                        case "T":
+                            title = "Mx";
+                            break;
+
+                        default:
+                            System.out.println("The gender data in the file " + myFileName + " is invalid; Only M, F or T is allowed");
+                            valid = false;
                     }
+
+                    myWriter.write(title + surname + ", " + name.substring(0, 1));
+                    myWriter.newLine();
 
                     // if conditions to create the second line according to the person's age
                     if (age >= 0 && age <= 18) {
@@ -87,7 +98,11 @@ public class Ca1_Programming {
             myWriter.close(); //closing the writer
 
         } catch (Exception e) { //catching any exceptions that might appear
-            System.out.println("error");
+
+            System.out.println("The file " + myFileName + " is missing, or is not in the correct format. It should be:");
+            System.out.println("Line 1 -- <firstname> <surname>");
+            System.out.println("Line 2 -- <age>");
+            System.out.println("Line 3 -- <gender -- only M, F or T allowed>");
         }
     }
 }
